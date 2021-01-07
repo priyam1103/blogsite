@@ -3,11 +3,14 @@ import axios from "axios";
 import {Link} from "@reach/router"
 export default function Blog(props) {
     const [blog, setBlog] = useState(null);
+    const [loading, setLoading] = useState(false);
     useEffect(() => {
         async function getblog() {
+            setLoading(true);
             await axios.get(`https://blogsite1103.herokuapp.com/api/blog/getblog/${props.id}`)
                 .then((res) => {
                     console.log(res)
+                    setLoading(false);
                     setBlog(res.data.blog)
                 }).catch((err) => {
                     console.log(err.response)
@@ -17,7 +20,8 @@ export default function Blog(props) {
     }, [])
 
     return (
-    <>
+        <>
+            {loading && <div className="loader message"></div>}
         { blog != null &&
         <div className="blog-page">
            
