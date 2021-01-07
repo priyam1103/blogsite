@@ -1,11 +1,13 @@
 import React,{useState} from 'react'
 import { useDispatch } from "react-redux"
-import { LOGIN_FORM,AUTH_USER } from "../server/actiontypes"
+import { LOGIN_FORM, AUTH_USER } from "../server/actiontypes"
+import Backdrop from "./Backdrop";
 import axios from "axios"
 export default function LoginForm() {
     const email_test= /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     const dispatch = useDispatch();
     const [formState, setFormState] = useState("signin")
+    const [loading, setLoading] = useState(false);
     const [error, setError] = useState({
         emailId: "",
         username: "",
@@ -36,7 +38,8 @@ export default function LoginForm() {
             call:""
         })
     }
-    const handleSignup =async () => {
+    const handleSignup = async () => {
+        setLoading(true);
         setError({
             emailId: "",
             username: "",
@@ -80,7 +83,7 @@ export default function LoginForm() {
                         mobileNo: res.data.user_.mobileNo,
                         id:res.data.user_._id
                     }
-                  
+                    setLoading(false);
                     dispatch({
                         type: AUTH_USER,
                         payload:{token:res.data.token, user}
@@ -99,7 +102,7 @@ export default function LoginForm() {
        
     }
     const handleSignin = () => {
-        
+        setLoading(true);
             if (formdataSignin.username === "") {
                 setError({ ...error, username: "Please enter the username" })
                 return;
@@ -111,7 +114,7 @@ export default function LoginForm() {
 
             axios.post("https://blogsite1103.herokuapp.com/api/auth/signin", formdataSignin)
                 .then((res) => {
-
+                    setLoading(false);
                     const user = {
                         username: res.data.user_.username,
                         emailId: res.data.user_.emailId,
@@ -133,7 +136,10 @@ export default function LoginForm() {
     }
     return (
         <div className="loginform">
-
+            {loading && <>
+                <Backdrop />
+                <div className="loader message"></div>
+            </>}
             <div className="form">
                 {formState === "signup" ?
                     <div className="inputs">
