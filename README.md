@@ -1,5 +1,5 @@
 
-[a link](https://blogsite-priyam.netlify.app/)
+[https://blogsite-priyam.netlify.app/](https://blogsite-priyam.netlify.app/)
 
 ### `yarn dev`
 
