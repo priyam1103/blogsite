@@ -7,10 +7,11 @@ import readingTime from 'reading-time';
 import { useNavigate } from "@reach/router"
 export default function Publish() {
     const dispatch = useDispatch();
+    const [loading, setLoading] = useState(false);
     const [storydata, setStoryData] = useState({
         title: "",
         story: "",
-        tagname:""
+        tagname:null
     })
     const navigate = useNavigate()
     const [reading_time,setReadingTime] = useState({})
@@ -24,24 +25,33 @@ export default function Publish() {
         }
     },[])
     const handlePublish = async () => {
+        setLoading(true);
         await axios.post("https://blogsite1103.herokuapp.com/api/blog/postblog", {...storydata,readtime:reading_time.text}, {
             headers: {
              Authorization:"Bearer "+localStorage.getItem("cofounder")
          }
         }).then((res) => {
             if (res.status === 200) {
+                setLoading(false);
              navigate("/")
          }
      })
     }
     return (
         <div className="publish-block">
+            {loading && <>
+                <Backdrop /> 
+            <div className="loader message"></div>    
+            </>}
             {publish && <>
                 <Backdrop />
                 <div className="publish-card">
                     <div >
                     <p className="text">Select a tag for your story</p>
-                <select onChange={(e)=>setStoryData({...storydata,tagname:e.target.value})} className="select-css">
+                        <select onChange={(e) => {
+                            
+                            setStoryData({ ...storydata, tagname: e.target.value })
+                        }} className="select-css">
   <option>Select a tag</option>
   <option >Sports</option>
   <option >News</option>
@@ -54,7 +64,15 @@ export default function Publish() {
                         <p>Story - {storydata.story.substr(0, 20)}.....</p>
                         <p className="reading-time">{reading_time.text}</p>
                         <div className="pub-buttons">
-                        <button onClick={()=>handlePublish()} className="publish-button">Publish</button>
+
+                            <button onClick={() => {
+                               
+                                if (storydata.tagname === null || storydata.tagname === "Select a tag") {
+                                    
+                                } else {
+                                    handlePublish()
+                                }
+                            }} className={`${storydata.tagname===null || storydata.tagname==="Select a tag" ?`publish-button disabled-button`:'publish-button'}`}>Publish</button>
                             <button onClick={() => setPublish(false)} className="cancel-button">Cancel</button>
                             </div>
                     </div>

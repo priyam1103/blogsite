@@ -4,10 +4,13 @@ import {Link,useNavigate} from "@reach/router"
 export default function Home() {
     const navigate = useNavigate();
     const [blogs, setBlogs] = useState([]);
+    const [loading, setLoading] = useState(false);
     useEffect(() => {
         async function fetchBlogs() {
+            setLoading(true);
             await axios.get("https://blogsite1103.herokuapp.com/api/blog/getblogs")
                 .then((res) => {
+                    setLoading(false);
                     setBlogs(res.data.blogs)
             
             })
@@ -16,7 +19,7 @@ export default function Home() {
     }, [])
     
     function handleNavigate(val) {
-navigate(`tags/${val}`)
+    navigate(`tags/${val}`)
         
     }
     return (
@@ -29,8 +32,9 @@ navigate(`tags/${val}`)
   <option>Technology</option>
   <option>History</option>
                 </select>
-                </div>
-            {blogs.map((item, index) => (
+            </div>
+            {loading ?<div className="loader message"></div>: <>
+                {blogs.map((item, index) => (
                 <Link to={`/blog/${item._id}`} key={index} className="blogcard-text">
                 <div  className="blog-card">
                     <p>{item.title}</p>
@@ -38,7 +42,8 @@ navigate(`tags/${val}`)
                     <p>{item.story.substring(0,200)}.......</p>
                     </div>
                     </Link>
-            ))}
+            )).reverse()}</>}
+            
         </div>
     )
 }

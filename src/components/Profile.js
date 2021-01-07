@@ -6,27 +6,33 @@ import { faSignature,faEnvelope,faPhoneAlt,faSmileBeam,faBlog } from '@fortaweso
 
 export default function Profile(props) {
     const [blogs, setBlogs] = useState([]);
+    const [loading, setLoading] = useState(false);
     const [user, setUser] = useState({})
     const navigate = useNavigate();
     useEffect(() => {
 
         async function getBlogs() {
+            setLoading(true);
             await axios.get(`https://blogsite1103.herokuapp.com/api/blog/getuserblogs/${props.id}`, {
                 headers: {
                     Authorization: "Bearer " + localStorage.getItem("cofounder")
                 }
             })
-                .then((res) => {
+            .then((res) => {
+                    setLoading(false);
                     setBlogs(res.data.blogs)
                     setUser(res.data.user)
-                }).catch((err) => {
+            })
+            .catch((err) => {
                 navigate("/")
             })
         } 
         getBlogs();
     },[])
     return (
+
         <div className="profile">
+            {loading ? <div className="loader message"></div> : <>
             <div className="user-details">
                 <p> <FontAwesomeIcon icon={faSignature} size="xs" /> {user.username}</p>
             <p><FontAwesomeIcon icon={faEnvelope} size="xs" /> {user.emailId}</p>
@@ -44,8 +50,9 @@ export default function Profile(props) {
                     <p>{item.story.substring(0,200)}.......</p>
                     </div>
                     </Link>
-            ))}
-                </div>
+            )).reverse()}
+                </div></>}
+           
         </div>
     )
 }
