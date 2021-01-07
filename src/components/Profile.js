@@ -11,7 +11,7 @@ export default function Profile(props) {
     useEffect(() => {
 
         async function getBlogs() {
-            await axios.get(`http://localhost:3004/api/blog/getuserblogs/${props.id}`, {
+            await axios.get(`https://blogsite1103.herokuapp.com/api/blog/getuserblogs/${props.id}`, {
                 headers: {
                     Authorization: "Bearer " + localStorage.getItem("cofounder")
                 }

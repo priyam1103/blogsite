@@ -5,7 +5,7 @@ export default function CategoryBlogs(props) {
     const [blogs, setBlogs] = useState([]);
     useEffect(() => {
         async function getBlogs() {
-            await axios.get(`http://localhost:3004/api/blog/getcategoryblogs/${props.tagname}`)
+            await axios.get(`https://blogsite1103.herokuapp.com/api/blog/getcategoryblogs/${props.tagname}`)
                 .then((res) => {
                     setBlogs(res.data.blogs)
             })
@@ -14,15 +14,18 @@ export default function CategoryBlogs(props) {
     },[])
     return (
         <div>
-             {blogs.map((item, index) => (
-                <Link to={`/blog/${item._id}`} key={index} className="blogcard-text">
-                <div  className="blog-card">
-                    <p>{item.title}</p>
-                        <p className="reading-time">{item.readtime} <span>({item.tagname})</span></p>
-                    <p>{item.story.substring(0,200)}.......</p>
-                    </div>
+            {blogs.length === 0 ?
+            <p className="message">No blogs yet</p>: <>
+                {blogs.map((item, index) => (
+                    <Link to={`/blog/${item._id}`} key={index} className="blogcard-text">
+                        <div className="blog-card">
+                            <p>{item.title}</p>
+                            <p className="reading-time">{item.readtime} <span>({item.tagname})</span></p>
+                            <p>{item.story.substring(0, 200)}.......</p>
+                        </div>
                     </Link>
-            ))}
+                ))}
+            </>}
         </div>
     )
 }

@@ -69,7 +69,7 @@ export default function LoginForm() {
         
       
 
-            await axios.post("http://localhost:3004/api/auth/signup", formdata)
+            await axios.post("https://blogsite1103.herokuapp.com/api/auth/signup", formdata)
                 .then(res => {
                     
                   
@@ -109,7 +109,7 @@ export default function LoginForm() {
                 return;
             }
 
-            axios.post("http://localhost:3004/api/auth/signin", formdataSignin)
+            axios.post("https://blogsite1103.herokuapp.com/api/auth/signin", formdataSignin)
                 .then((res) => {
 
                     const user = {

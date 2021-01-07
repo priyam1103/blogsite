@@ -5,7 +5,7 @@ export default function Blog(props) {
     const [blog, setBlog] = useState(null);
     useEffect(() => {
         async function getblog() {
-            await axios.get(`http://localhost:3004/api/blog/getblog/${props.id}`)
+            await axios.get(`https://blogsite1103.herokuapp.com/api/blog/getblog/${props.id}`)
                 .then((res) => {
                     console.log(res)
                     setBlog(res.data.blog)

@@ -6,7 +6,7 @@ export default function Home() {
     const [blogs, setBlogs] = useState([]);
     useEffect(() => {
         async function fetchBlogs() {
-            await axios.get("http://localhost:3004/api/blog/getblogs")
+            await axios.get("https://blogsite1103.herokuapp.com/api/blog/getblogs")
                 .then((res) => {
                     setBlogs(res.data.blogs)
             

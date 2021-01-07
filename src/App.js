@@ -23,7 +23,7 @@ function App() {
     async function userCall() {
  
       if (token !== "undefined" || token!==null) {
-        await axios.get("http://localhost:3004/api/auth/me", {
+        await axios.get("https://blogsite1103.herokuapp.com/api/auth/me", {
           headers: {
             Authorization: "Bearer " + token
           }

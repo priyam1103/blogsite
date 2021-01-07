@@ -24,7 +24,7 @@ export default function Publish() {
         }
     },[])
     const handlePublish = async () => {
-        await axios.post("http://localhost:3004/api/blog/postblog", {...storydata,readtime:reading_time.text}, {
+        await axios.post("https://blogsite1103.herokuapp.com/api/blog/postblog", {...storydata,readtime:reading_time.text}, {
             headers: {
              Authorization:"Bearer "+localStorage.getItem("cofounder")
          }
